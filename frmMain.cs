@@ -4,24 +4,20 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace LibraryInformation
 {
     public partial class frmMain : Form
     {
-        DataTable table;
+        public DataTable table;
         string[] temp1;
-        String check = "";
-        String search = "";
         String LastPath = "";
-        String path1 = "";
+        static String LOG_FILENAME = "log.txt";
         public frmMain()
         {
             InitializeComponent();
@@ -29,16 +25,14 @@ namespace LibraryInformation
 
         private void btnExit_Click(object sender, EventArgs e)
         {
+            LogMessageToFile("Program has been closed");
             Application.Exit();
         }
         private void frmMain_Load(object sender, EventArgs e)
         {
-            cmbBox.Items.Add("CSV");
-            cmbBox.Items.Add("TXT");
-            cmbBox.Items.Add("JSON");
-            cmbBox.Items.Add("XML");
-            cmbBox.Items.Add("All formats");
-            cmbBox.SelectedItem = "All formats";
+            LogMessageToFile("Program has been started");
+            cmbBox.Items.Add("All types");
+            cmbBox.SelectedItem = "All types";
             cmbBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 
             table = new DataTable();
@@ -46,12 +40,11 @@ namespace LibraryInformation
             table.Columns.Add("Type", typeof(string));
             table.Columns.Add("Count", typeof(string));
             table.Columns.Add("Year", typeof(string));
-            table.Columns.Add("Format", typeof(string));
 
-            AddToDgr("journal.txt", 0);
-            AddToDgr("topic.csv", 1);
-            AddToDgr("edition.xml", 2);
-            AddToDgr("section.txt", 3);
+            //AddToDgr("journal.txt", 0);
+            //AddToDgr("topic.csv", 1);
+            //AddToDgr("edition.xml", 2);
+            //AddToDgr("section.txt", 3);
 
             /*for (int i = 0; i < lbr.Count; i++)
             {
@@ -81,14 +74,30 @@ namespace LibraryInformation
             dgrTable.Rows[2].Height = (int)(dgrTable.Height * 0.2);
             dgrTable.Rows[3].Height = (int)(dgrTable.Height * 0.2);*/
         }
-        public void AddToDgr(string path, int index)
+        public static void LogMessageToFile(string msg)
         {
-            //path = Path.GetFullPath(path);
-            path1 = convertToTXT(path);
-            String path1 = convertToTXT("res\\"+path);
-            table.Rows.Add(1);
-            List<String> lines = new List<string>();
-            using (StreamReader fs = new StreamReader(path1))
+            try
+            {
+                System.IO.FileInfo f = new System.IO.FileInfo(LOG_FILENAME);
+                long lLength = f.Length;
+
+                if (lLength > 100 * 1024 * 1024)
+                    f.Delete();
+            }
+            catch { }
+
+            msg = string.Format("{0:G}: {1}\r\n", DateTime.Now, msg);
+            System.IO.File.AppendAllText(LOG_FILENAME, msg);
+        }
+        public void LoadData(String lsFileName)
+        {
+            LogMessageToFile("File has been loaded");
+            table.Clear();
+
+            String lsFileNameTXT = convertToTXT(lsFileName);
+
+            int i = 0;
+            using (StreamReader fs = new StreamReader(lsFileNameTXT))
             {
                 while (true)
                 {
@@ -98,75 +107,93 @@ namespace LibraryInformation
 
                     if (temp == null) break;
 
-                    lines.Add(temp);
+                    table.Rows.Add();
+                    for (int j = 0; j < temp1.Length; j++)
+                    {
+                        table.Rows[i][j] = temp1[j];
+                    }
+                    i++;
                 }
             }
-            for (int i = 0; i < temp1.Length; i++)
-            {
-                table.Rows[index][i] = temp1[i];
-            }
-            table.Rows[index][temp1.Length] = Path.GetExtension(path);
             dgrTable.DataSource = table;
+            File.Delete(lsFileNameTXT);
+            FillTypeBox();
         }
 
         private void btnFilter_Click(object sender, EventArgs e)
         {
             frmFilter newForm = new frmFilter();
             newForm.ShowDialog();
+            LogMessageToFile("Filter has been opened");
+            filter();
         }
-
+        public void filter()
+        {
+            /*
+            dgrTable.CurrentCell = null;
+            //Name
+            if (frmFilter.check.Contains("Name"))
+            {
+                for (int i = 0; i < dgrTable.Rows.Count - 1; i++)
+                {
+                    dgrTable.Rows[i].Visible = dgrTable[0, i].Value.ToString().Contains(frmFilter.search);
+                }
+            }
+            //Type
+            if (frmFilter.check.Contains("Type"))
+            {
+                for (int i = 0; i < dgrTable.Rows.Count - 1; i++)
+                {
+                    dgrTable.Rows[i].Visible = dgrTable[1, i].Value.ToString().Contains(frmFilter.search);
+                }
+            }
+            //Pages
+            if (frmFilter.check.Contains("Pages"))
+            {
+                for (int i = 0; i < dgrTable.Rows.Count - 1; i++)
+                {
+                    dgrTable.Rows[i].Visible = dgrTable[1, i].Value.ToString().Contains(frmFilter.search);
+                }
+            }
+            //Year
+            if (frmFilter.check.Contains("Year"))
+            {
+                for (int i = 0; i < dgrTable.Rows.Count - 1; i++)
+                {
+                    dgrTable.Rows[i].Visible = dgrTable[1, i].Value.ToString().Contains(frmFilter.search);
+                }
+            }
+            //None
+            if (frmFilter.check == "")
+            {
+                for (int i = 0; i < dgrTable.Rows.Count - 1; i++)
+                    dgrTable.Rows[i].Visible = true;
+            }
+            else if (frmFilter.search == "")
+            {
+                for (int i = 0; i < dgrTable.Rows.Count - 1; i++)
+                    dgrTable.Rows[i].Visible = true;
+            }
+        }
         private void cmbBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            String selectedFormat = cmbBox.SelectedIndex.ToString();
             dgrTable.CurrentCell = null;
-            //CSV
-            if (selectedFormat.Contains("0"))
+            if (cmbBox.SelectedItem != "All types")
             {
                 for (int i = 0; i < dgrTable.Rows.Count - 1; i++)
-                    dgrTable.Rows[i].Visible = dgrTable[4, i].Value.ToString() == ".csv";
-            }
-            //TXT
-            else if (selectedFormat.Contains("1"))
-            {
-                for (int i = 0; i < dgrTable.Rows.Count - 1; i++)
-                    dgrTable.Rows[i].Visible = dgrTable[4, i].Value.ToString() == ".txt";
-            }
-            //JSON
-            else if (selectedFormat.Contains("2"))
-            {
-                for (int i = 0; i < dgrTable.Rows.Count - 1; i++)
-                    dgrTable.Rows[i].Visible = dgrTable[4, i].Value.ToString() == ".json";
-            }
-            //XML
-            else if (selectedFormat.Contains("3"))
-            {
-                for (int i = 0; i < dgrTable.Rows.Count - 1; i++)
-                    dgrTable.Rows[i].Visible = dgrTable[4, i].Value.ToString() == ".xml";
+                    dgrTable.Rows[i].Visible = dgrTable[1, i].Value.ToString() == cmbBox.SelectedItem.ToString();
             }
             else
             {
                 for (int i = 0; i < dgrTable.Rows.Count - 1; i++)
                     dgrTable.Rows[i].Visible = true;
             }
-        }
+            */
+            var selected = db.Where(p => p.Name.ToString().StartsWith(frmFilter.search)).OrderBy(p => p.Name);
+                dgrTable.DataSource = selected.ToArray();
+            }
 
-        private void dgrTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            String path = "";
-            int row = dgrTable.CurrentCell.RowIndex;
-            int column = dgrTable.CurrentCell.ColumnIndex;
-            path = dgrTable[1, row].Value.ToString() + dgrTable[4, row].Value.ToString();
-            path = Path.GetFullPath("res\\" + path);
-            path = path.Replace(" ", "");
-            var p = new Process();
-            p.StartInfo = new ProcessStartInfo(path)
-            {
-                UseShellExecute = true,
-                Arguments = "explorer.com"
-            };
-            p.Start();
-        }
-        public String convertToTXT(String FilePath)
+            public String convertToTXT(String FilePath)
         {
             List<Library> libraries = new List<Library>();
             String LastPath1 = FilePath;
@@ -252,54 +279,172 @@ namespace LibraryInformation
         {
             SaveFileDialog SFD = new SaveFileDialog();
             SFD.InitialDirectory = Directory.GetCurrentDirectory() + "\\output";
-            SFD.Filter = "JSON|*.json|CSV|*.csv|XML|*.xml|XLSX|*.xlsx";
+            SFD.Filter = "JSON|*.json|CSV|*.csv|XML|*.xml";
             if (SFD.ShowDialog() == DialogResult.OK)
             {
                 LastPath = SFD.FileName;
                 int convert = SFD.FilterIndex;
-                //SaveFile(LastPath, convert);
+                SaveFile(LastPath, convert);
             }
-            MessageBox.Show("Ваш файл находится в " + LastPath);
+            //MessageBox.Show("Ваш файл находится в " + LastPath);
+            LogMessageToFile("File has been saved");
         }
-        /*private void SaveFile(String LastPath, int convert)
+
+        public void FillTypeBox()
         {
+            cmbBox.Items.Clear();
+            cmbBox.Items.Add("All types");
+            cmbBox.SelectedItem = "All types";
+            foreach (DataGridViewRow row in dgrTable.Rows)
+            {
+                if ((row.Cells[1].Value != null) && (!cmbBox.Items.Contains(row.Cells[1].Value)))
+                    cmbBox.Items.Add(row.Cells[1].Value);
+            }
+
+            //cmbBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+        }
+
+        private void btnOpen_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog OPF = new OpenFileDialog();
+            OPF.InitialDirectory = Directory.GetCurrentDirectory() + "\\res";
+            FillTypeBox();
+            if (OPF.ShowDialog() == DialogResult.OK)
+            {
+                LoadData(OPF.FileName);
+            }
+            lblFile.Text = String.Format("Data:   {0}", OPF.FileName);
+            LogMessageToFile("User opened OpenFileDialog");
+        }
+        private void btnOpenLog_Click(object sender, EventArgs e)
+        {
+            var p = new Process();
+            p.StartInfo = new ProcessStartInfo(LOG_FILENAME)
+            {
+                UseShellExecute = true
+            };
+            p.Start();
+        }
+
+        private void SaveFile(String LastPath, int convert)
+        {
+            FileStream fs = new FileStream(@"1.txt", FileMode.Create);
+            StreamWriter streamWriter = new StreamWriter(fs);
+            for (int j = 0; j < dgrTable.Rows.Count - 1; j++)
+            {
+                for (int i = 0; i < dgrTable.Rows[j].Cells.Count; i++)
+                {
+                    if (i != dgrTable.Rows[j].Cells.Count - 1)
+                        streamWriter.Write(dgrTable.Rows[j].Cells[i].Value + ", ");
+                    else
+                        streamWriter.Write(dgrTable.Rows[j].Cells[i].Value);
+                }
+                streamWriter.WriteLine();
+            }
+            streamWriter.Close();
+            fs.Close();
             List<String> lines = new List<string>();
-            using (StreamReader fs = new StreamReader(FilePath))
+            using (StreamReader fs1 = new StreamReader(@"1.txt"))
             {
                 while (true)
                 {
-                    string temp = fs.ReadLine();
+                    string temp = fs1.ReadLine();
 
                     if (temp == null) break;
 
                     lines.Add(temp);
                 }
             }
-            int convert = SFD.FilterIndex;
             switch (convert)
             {
-                case 0:
-                    Area.convertToJSON(LastPath, FilePath, lines);
-                    break;
                 case 1:
-                    Area.convertToCSV(LastPath, FilePath, lines);
+                    convertToJSON(LastPath, lines);
                     break;
                 case 2:
-                    Area.convertToXML(LastPath, FilePath, lines);
+                    convertToCSV(LastPath, lines);
                     break;
                 case 3:
-                    Area.convertToXLSX(LastPath, FilePath, lines);
+                    convertToXML(LastPath, lines);
                     break;
             }
-            //using (StreamWriter sw = new StreamWriter(LastPath))
-            //{
-            //    foreach (String item in lines)
-            //    {
-            //        sw.WriteLine(item);
-            //    }
-            //} 
+            File.Delete(@"1.txt");
+        }
+        public static void convertToJSON(String LastPath, List<String> lines)
+        {
+            var model = lines.Select(p => new
+            {
+                name = p.Split(", ")[0],
+                type = p.Split(", ")[1],
+                countPages = p.Split(", ")[2],
+                foundationYear = p.Split(", ")[3],
+            });
+            var json = System.Text.Json.JsonSerializer.Serialize(model);
+            LastPath = LastPath.Replace(".txt", ".json");
+            using (StreamWriter sw = new StreamWriter(LastPath))
+            {
+                sw.WriteLine(json);
+            }
+        }
+        public static void convertToCSV(String LastPath, List<String> lines)
+        {
+            LastPath = LastPath.Replace(".txt", ".csv");
+            using (StreamWriter sw = new StreamWriter(LastPath))
+            {
+                foreach (String item in lines)
+                {
+                    sw.WriteLine(item);
+                }
+            }
+        }
+        public static void convertToXML(String LastPath, List<String> lines)
+        {
+            var sr = new StreamReader(@"1.txt");
+            var xmlTree = new XStreamingElement("Root",
+                from line in sr.Lines()
+                let items = line.Split(',')
+                select new XElement("Name",
+                            new XAttribute("name", items[0]),
+                            new XElement("Type", items[1]),
+                            new XElement("countPages", items[2]),
+                            new XElement("foundationYear", items[3])
+                        )
+            );
+            using (StreamWriter sw = new StreamWriter(LastPath))
+            {
+                sw.WriteLine(xmlTree);
+            }
+            sr.Close();
+        }
 
-        } */
+        private void dgrTable_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        {
+            FillTypeBox();
+            LogMessageToFile("Row has been removed");
+        }
+
+        private void dgrTable_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            FillTypeBox();
+            LogMessageToFile("Cell Value has been changed");
+        }
+
+        private void dgrTable_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            LogMessageToFile("Row has been added");
+        }
     }
+    public static class StreamReaderSequence
+    {
+        public static IEnumerable<string> Lines(this StreamReader source)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
 
+            string line;
+            while ((line = source.ReadLine()) != null)
+            {
+                yield return line;
+            }
+        }
+    }
 }

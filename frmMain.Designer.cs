@@ -36,6 +36,8 @@ namespace LibraryInformation
             this.btnSave = new System.Windows.Forms.Button();
             this.cmbBox = new System.Windows.Forms.ComboBox();
             this.btnFilter = new System.Windows.Forms.Button();
+            this.lblFile = new System.Windows.Forms.Label();
+            this.btnOpenLog = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgrTable)).BeginInit();
             this.SuspendLayout();
             // 
@@ -46,22 +48,24 @@ namespace LibraryInformation
             this.dgrTable.Name = "dgrTable";
             this.dgrTable.RowHeadersWidth = 51;
             this.dgrTable.RowTemplate.Height = 29;
-            this.dgrTable.Size = new System.Drawing.Size(762, 308);
+            this.dgrTable.Size = new System.Drawing.Size(1052, 308);
             this.dgrTable.TabIndex = 0;
-            this.dgrTable.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgrTable_CellContentClick);
+            this.dgrTable.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgrTable_CellValueChanged);
+            this.dgrTable.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dgrTable_RowsAdded);
+            this.dgrTable.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dgrTable_RowsRemoved);
             // 
             // lblType
             // 
             this.lblType.AutoSize = true;
-            this.lblType.Location = new System.Drawing.Point(32, 29);
+            this.lblType.Location = new System.Drawing.Point(12, 30);
             this.lblType.Name = "lblType";
-            this.lblType.Size = new System.Drawing.Size(59, 20);
+            this.lblType.Size = new System.Drawing.Size(43, 20);
             this.lblType.TabIndex = 1;
-            this.lblType.Text = "Format:";
+            this.lblType.Text = "Type:";
             // 
             // btnExit
             // 
-            this.btnExit.Location = new System.Drawing.Point(680, 409);
+            this.btnExit.Location = new System.Drawing.Point(970, 408);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(94, 29);
             this.btnExit.TabIndex = 2;
@@ -77,10 +81,11 @@ namespace LibraryInformation
             this.btnOpen.TabIndex = 3;
             this.btnOpen.Text = "Open";
             this.btnOpen.UseVisualStyleBackColor = true;
+            this.btnOpen.Click += new System.EventHandler(this.btnOpen_Click);
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(204, 408);
+            this.btnSave.Location = new System.Drawing.Point(133, 408);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(94, 29);
             this.btnSave.TabIndex = 4;
@@ -91,7 +96,7 @@ namespace LibraryInformation
             // cmbBox
             // 
             this.cmbBox.FormattingEnabled = true;
-            this.cmbBox.Location = new System.Drawing.Point(97, 26);
+            this.cmbBox.Location = new System.Drawing.Point(77, 27);
             this.cmbBox.Name = "cmbBox";
             this.cmbBox.Size = new System.Drawing.Size(151, 28);
             this.cmbBox.TabIndex = 5;
@@ -99,7 +104,7 @@ namespace LibraryInformation
             // 
             // btnFilter
             // 
-            this.btnFilter.Location = new System.Drawing.Point(639, 24);
+            this.btnFilter.Location = new System.Drawing.Point(511, 408);
             this.btnFilter.Name = "btnFilter";
             this.btnFilter.Size = new System.Drawing.Size(94, 29);
             this.btnFilter.TabIndex = 6;
@@ -107,11 +112,31 @@ namespace LibraryInformation
             this.btnFilter.UseVisualStyleBackColor = true;
             this.btnFilter.Click += new System.EventHandler(this.btnFilter_Click);
             // 
+            // lblFile
+            // 
+            this.lblFile.AutoSize = true;
+            this.lblFile.Location = new System.Drawing.Point(264, 30);
+            this.lblFile.Name = "lblFile";
+            this.lblFile.Size = new System.Drawing.Size(0, 20);
+            this.lblFile.TabIndex = 7;
+            // 
+            // btnOpenLog
+            // 
+            this.btnOpenLog.Location = new System.Drawing.Point(296, 408);
+            this.btnOpenLog.Name = "btnOpenLog";
+            this.btnOpenLog.Size = new System.Drawing.Size(94, 29);
+            this.btnOpenLog.TabIndex = 8;
+            this.btnOpenLog.Text = "Open a log";
+            this.btnOpenLog.UseVisualStyleBackColor = true;
+            this.btnOpenLog.Click += new System.EventHandler(this.btnOpenLog_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1076, 450);
+            this.Controls.Add(this.btnOpenLog);
+            this.Controls.Add(this.lblFile);
             this.Controls.Add(this.btnFilter);
             this.Controls.Add(this.cmbBox);
             this.Controls.Add(this.btnSave);
@@ -120,7 +145,7 @@ namespace LibraryInformation
             this.Controls.Add(this.lblType);
             this.Controls.Add(this.dgrTable);
             this.Name = "frmMain";
-            this.Text = "Form1";
+            this.Text = "Library information";
             this.Load += new System.EventHandler(this.frmMain_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgrTable)).EndInit();
             this.ResumeLayout(false);
@@ -137,6 +162,8 @@ namespace LibraryInformation
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.ComboBox cmbBox;
         private System.Windows.Forms.Button btnFilter;
+        private System.Windows.Forms.Label lblFile;
+        private System.Windows.Forms.Button btnOpenLog;
     }
 }
 

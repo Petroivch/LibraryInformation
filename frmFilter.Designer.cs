@@ -117,6 +117,7 @@ namespace LibraryInformation
             this.Controls.Add(this.chkBoxType);
             this.Controls.Add(this.chkBoxName);
             this.Controls.Add(this.lblSearch);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "frmFilter";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "frmFilter";

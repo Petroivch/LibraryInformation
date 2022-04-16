@@ -1,19 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace LibraryInformation
 {
     public partial class frmFilter : Form
     {
-        public String check = "";
-        public String search = "";
+        public static String check = "";
+        public static String search = "";
         public frmFilter()
         {
             InitializeComponent();

@@ -1,0 +1,5 @@
+16.04.2022 17:35:32: Program has been started
+16.04.2022 17:37:00: Program has been started
+16.04.2022 17:37:05: Program has been closed
+16.04.2022 17:38:51: Program has been started
+16.04.2022 17:38:58: Program has been closed
