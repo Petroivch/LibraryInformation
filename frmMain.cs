@@ -15,6 +15,8 @@ namespace LibraryInformation
     public partial class frmMain : Form
     {
         public DataTable table;
+        public DataTable table_filter;
+
         string[] temp1;
         String LastPath = "";
         static String LOG_FILENAME = "log.txt";
@@ -40,6 +42,12 @@ namespace LibraryInformation
             table.Columns.Add("Type", typeof(string));
             table.Columns.Add("Count", typeof(string));
             table.Columns.Add("Year", typeof(string));
+
+            table_filter = new DataTable();
+            table_filter.Columns.Add("Name", typeof(string));
+            table_filter.Columns.Add("Type", typeof(string));
+            table_filter.Columns.Add("Count", typeof(string));
+            table_filter.Columns.Add("Year", typeof(string));
 
             //AddToDgr("journal.txt", 0);
             //AddToDgr("topic.csv", 1);
@@ -174,6 +182,103 @@ namespace LibraryInformation
                 for (int i = 0; i < dgrTable.Rows.Count - 1; i++)
                     dgrTable.Rows[i].Visible = true;
             }
+            */
+
+            /* List<DataGridViewRow> flt = new List<DataGridViewRow>();
+             flt = dgrTable.Rows.Cast<DataGridViewRow>().Where(x => ((string)x.Cells[0].Value).Contains(frmFilter.search));
+
+             foreach (DataGridViewRow row in dgrTable.Rows.Cast<DataGridViewRow>().Where(x => ((string)x.Cells[0].Value).Contains(frmFilter.search)))
+             {
+                 row.Visible = false;
+             }*/
+            if (frmFilter.check.Contains("Name"))
+            {
+                var results = from myRow in table.AsEnumerable()
+                              where myRow.Field<String>("Name").Contains(frmFilter.search)
+                              select myRow;
+
+                table_filter.Clear();
+
+                foreach (DataRow row in results)
+                {
+                    table_filter.ImportRow(row);
+                }
+
+            }
+            if (frmFilter.check.Contains("Type"))
+            {
+                var results = from myRow in table.AsEnumerable()
+                              where myRow.Field<String>("Type").Contains(frmFilter.search)
+                              select myRow;
+
+                table_filter.Clear();
+
+                foreach (DataRow row in results)
+                {
+                    table_filter.ImportRow(row);
+                }
+
+            }
+            if (frmFilter.check.Contains("Pages"))
+            {
+                var results = from myRow in table.AsEnumerable()
+                              where myRow.Field<String>("Count").Contains(frmFilter.search)
+                              select myRow;
+
+                table_filter.Clear();
+
+                foreach (DataRow row in results)
+                {
+                    table_filter.ImportRow(row);
+                }
+
+            }
+            if (frmFilter.check.Contains("Year"))
+            {
+                var results = from myRow in table.AsEnumerable()
+                              where myRow.Field<String>("Year").Contains(frmFilter.search)
+                              select myRow;
+
+                table_filter.Clear();
+
+                foreach (DataRow row in results)
+                {
+                    table_filter.ImportRow(row);
+                }
+
+            }
+            dgrTable.DataSource = table_filter;
+
+
+            /*table_filter.Clear();
+            foreach (DataRow row in table.Rows.Cast<DataRow>().Where(x => (string)x.ItemArray[0] == "BBC"))
+            {
+                table_filter.Rows.Add(row);
+            }
+
+            dgrTable.DataSource = table_filter;*/
+
+            //table.Rows.Cast<DataRow>().Where(x => (string)x.ItemArray[0] == "BBC");
+
+            //dgrTable.DataSource = table.Rows.Cast<DataRow>().Where(x => (string)x.ItemArray[0] == "BBC");
+            //dgrTable.Refresh();
+
+            //.FirstOrDefault(r => r.DataBoundItem == myItem).Selected = true;
+
+            //for (int j = 0; j < dgrTable.Rows.Count - 1; j++)
+            //{
+            //    List<String> lines = new List<string>();
+            //    for (int i = 0; i < dgrTable.Rows[j].Cells.Count; i++)
+            //    {
+            //        lines.Add();
+            //        if (i != dgrTable.Rows[j].Cells.Count - 1)
+            //            lines.Add(dgrTable.Rows[j].Cells[i].Value + ", ");
+            //        else
+            //            lines.Add((String)dgrTable.Rows[j].Cells[i].Value);
+            //    }
+            //    var selected = lines.Where(l => lines.Contains(frmFilter.search));
+            //    dgrTable.DataSource = selected.ToArray();
+            //}
         }
         private void cmbBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -188,10 +293,7 @@ namespace LibraryInformation
                 for (int i = 0; i < dgrTable.Rows.Count - 1; i++)
                     dgrTable.Rows[i].Visible = true;
             }
-            */
-            var selected = db.Where(p => p.Name.ToString().StartsWith(frmFilter.search)).OrderBy(p => p.Name);
-                dgrTable.DataSource = selected.ToArray();
-            }
+        }
 
             public String convertToTXT(String FilePath)
         {

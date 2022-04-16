@@ -10,6 +10,8 @@ namespace LibraryInformation
         public static String search = "";
         public frmFilter()
         {
+            check = "";
+            search = "";
             InitializeComponent();
         }
 
