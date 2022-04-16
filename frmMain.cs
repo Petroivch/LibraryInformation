@@ -191,62 +191,41 @@ namespace LibraryInformation
              {
                  row.Visible = false;
              }*/
+
+            EnumerableRowCollection<DataRow> results = null;
+
             if (frmFilter.check.Contains("Name"))
             {
-                var results = from myRow in table.AsEnumerable()
+                results = from myRow in table.AsEnumerable()
                               where myRow.Field<String>("Name").Contains(frmFilter.search)
                               select myRow;
-
-                table_filter.Clear();
-
-                foreach (DataRow row in results)
-                {
-                    table_filter.ImportRow(row);
-                }
-
             }
             if (frmFilter.check.Contains("Type"))
             {
-                var results = from myRow in table.AsEnumerable()
+                results = from myRow in table.AsEnumerable()
                               where myRow.Field<String>("Type").Contains(frmFilter.search)
                               select myRow;
-
-                table_filter.Clear();
-
-                foreach (DataRow row in results)
-                {
-                    table_filter.ImportRow(row);
-                }
-
             }
             if (frmFilter.check.Contains("Pages"))
             {
-                var results = from myRow in table.AsEnumerable()
+                results = from myRow in table.AsEnumerable()
                               where myRow.Field<String>("Count").Contains(frmFilter.search)
                               select myRow;
-
-                table_filter.Clear();
-
-                foreach (DataRow row in results)
-                {
-                    table_filter.ImportRow(row);
-                }
-
             }
             if (frmFilter.check.Contains("Year"))
             {
-                var results = from myRow in table.AsEnumerable()
+                results = from myRow in table.AsEnumerable()
                               where myRow.Field<String>("Year").Contains(frmFilter.search)
                               select myRow;
-
-                table_filter.Clear();
-
-                foreach (DataRow row in results)
-                {
-                    table_filter.ImportRow(row);
-                }
-
             }
+
+            table_filter.Clear();
+
+            foreach (DataRow row in results)
+            {
+                table_filter.ImportRow(row);
+            }
+
             dgrTable.DataSource = table_filter;
 
 
