@@ -84,7 +84,7 @@ namespace LibraryInformation
         public void AddToDgr(string path, int index)
         {
             //path = Path.GetFullPath(path);
-            String path1 = convertToTXT(path);
+            String path1 = convertToTXT("res\\"+path);
             table.Rows.Add(1);
             List<String> lines = new List<string>();
             using (StreamReader fs = new StreamReader(path1))
@@ -155,14 +155,14 @@ namespace LibraryInformation
             int row = dgrTable.CurrentCell.RowIndex;
             int column = dgrTable.CurrentCell.ColumnIndex;
             path = dgrTable[1, row].Value.ToString() + dgrTable[4, row].Value.ToString();
-            path = Path.GetFullPath(path);
+            path = Path.GetFullPath("res\\" + path);
             path = path.Replace(" ", "");
             var p = new Process();
             p.StartInfo = new ProcessStartInfo(path)
             {
                 UseShellExecute = true,
                 Arguments = "explorer.com"
-        };
+            };
             p.Start();
         }
         public String convertToTXT(String FilePath)

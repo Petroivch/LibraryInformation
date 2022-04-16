@@ -1,0 +1,22 @@
+<Root>
+  <Name name="XX">
+    <Type>edition</Type>
+    <countPages>150</countPages>
+    <foundationYear>2021</foundationYear>
+  </Name>
+	<Name name="BBC">
+		<Type>edition</Type>
+		<countPages>15</countPages>
+		<foundationYear>2020</foundationYear>
+	</Name>
+	<Name name="BBC2">
+		<Type>edition</Type>
+		<countPages>1</countPages>
+		<foundationYear>2021</foundationYear>
+	</Name>
+	<Name name="BBC2">
+		<Type>journal</Type>
+		<countPages>5</countPages>
+		<foundationYear>2029</foundationYear>
+	</Name>		
+</Root>
