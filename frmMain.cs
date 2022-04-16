@@ -21,7 +21,7 @@ namespace LibraryInformation
         String check = "";
         String search = "";
         String LastPath = "";
-        String SuperPath = "";
+        String path1 = "";
         public frmMain()
         {
             InitializeComponent();
@@ -84,7 +84,7 @@ namespace LibraryInformation
         public void AddToDgr(string path, int index)
         {
             //path = Path.GetFullPath(path);
-            String path1 = convertToTXT(path);
+            path1 = convertToTXT(path);
             table.Rows.Add(1);
             List<String> lines = new List<string>();
             using (StreamReader fs = new StreamReader(path1))
@@ -255,16 +255,13 @@ namespace LibraryInformation
             if (SFD.ShowDialog() == DialogResult.OK)
             {
                 LastPath = SFD.FileName;
-                //SaveFile(LastPath);
+                int convert = SFD.FilterIndex;
+                //SaveFile(LastPath, convert);
             }
             MessageBox.Show("Ваш файл находится в " + LastPath);
         }
-        /*private void SaveFile(String LastPath)
+        /*private void SaveFile(String LastPath, int convert)
         {
-            if (!FilePath.Contains(".txt"))
-            {
-                FilePath = Area.convertToTXT(LastPath, FilePath);
-            }
             List<String> lines = new List<string>();
             using (StreamReader fs = new StreamReader(FilePath))
             {
@@ -277,7 +274,7 @@ namespace LibraryInformation
                     lines.Add(temp);
                 }
             }
-            int convert = cs.convert;
+            int convert = SFD.FilterIndex;
             switch (convert)
             {
                 case 0:
@@ -301,6 +298,7 @@ namespace LibraryInformation
             //    }
             //} 
 
-        }*/
+        } */
     }
+
 }
