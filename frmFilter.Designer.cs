@@ -41,18 +41,19 @@ namespace LibraryInformation
             // lblSearch
             // 
             this.lblSearch.AutoSize = true;
-            this.lblSearch.Location = new System.Drawing.Point(69, 88);
+            this.lblSearch.Location = new System.Drawing.Point(12, 9);
             this.lblSearch.Name = "lblSearch";
-            this.lblSearch.Size = new System.Drawing.Size(56, 20);
+            this.lblSearch.Size = new System.Drawing.Size(45, 15);
             this.lblSearch.TabIndex = 0;
             this.lblSearch.Text = "Search:";
             // 
             // chkBoxName
             // 
             this.chkBoxName.AutoSize = true;
-            this.chkBoxName.Location = new System.Drawing.Point(69, 144);
+            this.chkBoxName.Location = new System.Drawing.Point(60, 42);
+            this.chkBoxName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chkBoxName.Name = "chkBoxName";
-            this.chkBoxName.Size = new System.Drawing.Size(71, 24);
+            this.chkBoxName.Size = new System.Drawing.Size(58, 19);
             this.chkBoxName.TabIndex = 1;
             this.chkBoxName.Text = "Name";
             this.chkBoxName.UseVisualStyleBackColor = true;
@@ -60,9 +61,10 @@ namespace LibraryInformation
             // chkBoxType
             // 
             this.chkBoxType.AutoSize = true;
-            this.chkBoxType.Location = new System.Drawing.Point(69, 187);
+            this.chkBoxType.Location = new System.Drawing.Point(60, 65);
+            this.chkBoxType.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chkBoxType.Name = "chkBoxType";
-            this.chkBoxType.Size = new System.Drawing.Size(62, 24);
+            this.chkBoxType.Size = new System.Drawing.Size(50, 19);
             this.chkBoxType.TabIndex = 2;
             this.chkBoxType.Text = "Type";
             this.chkBoxType.UseVisualStyleBackColor = true;
@@ -70,9 +72,10 @@ namespace LibraryInformation
             // chkBoxPages
             // 
             this.chkBoxPages.AutoSize = true;
-            this.chkBoxPages.Location = new System.Drawing.Point(69, 230);
+            this.chkBoxPages.Location = new System.Drawing.Point(60, 88);
+            this.chkBoxPages.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chkBoxPages.Name = "chkBoxPages";
-            this.chkBoxPages.Size = new System.Drawing.Size(69, 24);
+            this.chkBoxPages.Size = new System.Drawing.Size(57, 19);
             this.chkBoxPages.TabIndex = 3;
             this.chkBoxPages.Text = "Pages";
             this.chkBoxPages.UseVisualStyleBackColor = true;
@@ -80,26 +83,29 @@ namespace LibraryInformation
             // chkBoxYear
             // 
             this.chkBoxYear.AutoSize = true;
-            this.chkBoxYear.Location = new System.Drawing.Point(69, 271);
+            this.chkBoxYear.Location = new System.Drawing.Point(60, 111);
+            this.chkBoxYear.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chkBoxYear.Name = "chkBoxYear";
-            this.chkBoxYear.Size = new System.Drawing.Size(59, 24);
+            this.chkBoxYear.Size = new System.Drawing.Size(48, 19);
             this.chkBoxYear.TabIndex = 4;
             this.chkBoxYear.Text = "Year";
             this.chkBoxYear.UseVisualStyleBackColor = true;
             // 
             // txtSearch
             // 
-            this.txtSearch.Location = new System.Drawing.Point(144, 88);
+            this.txtSearch.Location = new System.Drawing.Point(60, 6);
+            this.txtSearch.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(224, 27);
+            this.txtSearch.Size = new System.Drawing.Size(196, 23);
             this.txtSearch.TabIndex = 5;
             this.txtSearch.Enter += new System.EventHandler(this.txtSearch_Enter);
             // 
             // btnOk
             // 
-            this.btnOk.Location = new System.Drawing.Point(189, 349);
+            this.btnOk.Location = new System.Drawing.Point(174, 134);
+            this.btnOk.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnOk.Name = "btnOk";
-            this.btnOk.Size = new System.Drawing.Size(94, 29);
+            this.btnOk.Size = new System.Drawing.Size(82, 22);
             this.btnOk.TabIndex = 6;
             this.btnOk.Text = "OK";
             this.btnOk.UseVisualStyleBackColor = true;
@@ -107,9 +113,9 @@ namespace LibraryInformation
             // 
             // frmFilter
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(435, 402);
+            this.ClientSize = new System.Drawing.Size(272, 170);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.chkBoxYear);
@@ -118,9 +124,10 @@ namespace LibraryInformation
             this.Controls.Add(this.chkBoxName);
             this.Controls.Add(this.lblSearch);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "frmFilter";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "frmFilter";
+            this.Text = "Filter";
             this.Load += new System.EventHandler(this.frmFilter_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

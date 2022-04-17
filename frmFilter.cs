@@ -10,46 +10,45 @@ namespace LibraryInformation
         public static String search = "";
         public frmFilter()
         {
-            check = "";
-            search = "";
             InitializeComponent();
+
+            chkBoxName.Checked = check.Contains("Name");
+            chkBoxType.Checked = check.Contains("Type");
+            chkBoxPages.Checked = check.Contains("Pages");
+            chkBoxYear.Checked = check.Contains("Year");
+
+            txtSearch.Text = search;
         }
 
         private void frmFilter_Load(object sender, EventArgs e)
         {
-            txtSearch.Text = "Write name of type, type, etc";
-            txtSearch.ForeColor = Color.Gray;
+            if (search == String.Empty)
+            {
+                txtSearch.Text = "Write name of type, type, etc";
+                txtSearch.ForeColor = Color.Gray;
+            }
         }
         private void txtSearch_Enter(object sender, EventArgs e)//происходит когда элемент стает активным
         {
-            txtSearch.Text = null;
+            txtSearch.Text = search;
             txtSearch.ForeColor = Color.Black;
         }
 
         private void btnOk_Click(object sender, EventArgs e)
         {
+            check = "";
+
             if (chkBoxName.Checked)
-                check = "Name";
+                check += "Name";
             if (chkBoxType.Checked)
-            {
-                if (check != null)
-                    check += ", Type";
-                else
-                    check += "Type";
-            }
+                check += "Type";
             if (chkBoxPages.Checked)
-            {
-                if (check != null)
-                    check += ", Pages";
-                else
-                    check += "Pages";
-            }
+                check += "Pages";
             if (chkBoxYear.Checked)
-                if (check != null)
-                    check += ", Year";
-                else
-                    check += "Year";
+                 check += "Year";
+
             search = txtSearch.Text;
+
             this.Close();
         }
     }

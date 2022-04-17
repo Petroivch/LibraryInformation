@@ -40,62 +40,14 @@ namespace LibraryInformation
             table = new DataTable();
             table.Columns.Add("Name", typeof(string));
             table.Columns.Add("Type", typeof(string));
-            table.Columns.Add("Count", typeof(string));
-            table.Columns.Add("Year", typeof(string));
+            table.Columns.Add("Pages", typeof(int));
+            table.Columns.Add("Year", typeof(int));
 
             table_filter = new DataTable();
             table_filter.Columns.Add("Name", typeof(string));
             table_filter.Columns.Add("Type", typeof(string));
-            table_filter.Columns.Add("Count", typeof(string));
-            table_filter.Columns.Add("Year", typeof(string));
-
-            //AddToDgr("journal.txt", 0);
-            //AddToDgr("topic.csv", 1);
-            //AddToDgr("edition.xml", 2);
-            //AddToDgr("section.txt", 3);
-
-            /*for (int i = 0; i < lbr.Count; i++)
-            {
-                table.Rows.Add(lbr[i].getName());
-            }
-            for (int i = 0; i < lbr.Count; i++)
-            {
-                table.Rows[i][1] = lbr[i].getType();
-                table.Rows[i][2] = lbr[i].getPages();
-                table.Rows[i][3] = lbr[i].getYear();
-            }
-
-            dgrTable.DataSource = table;
-
-            dgrTable.RowHeadersVisible = false;
-            dgrTable.ColumnHeadersVisible = true;
-            dgrTable.AllowUserToAddRows = false;*/
-
-            /*
-            dgrTable.Columns[0].Width = (int)(dgrTable.Width * 0.15);
-            dgrTable.Columns[1].Width = (int)(dgrTable.Width * 0.15);
-            dgrTable.Columns[2].Width = (int)(dgrTable.Width * 0.15);
-            dgrTable.Columns[3].Width = (int)(dgrTable.Width * 0.15);
-            dgrTable.Columns[1].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            dgrTable.Rows[0].Height = (int)(dgrTable.Height * 0.2);
-            dgrTable.Rows[1].Height = (int)(dgrTable.Height * 0.2);
-            dgrTable.Rows[2].Height = (int)(dgrTable.Height * 0.2);
-            dgrTable.Rows[3].Height = (int)(dgrTable.Height * 0.2);*/
-        }
-        public static void LogMessageToFile(string msg)
-        {
-            try
-            {
-                System.IO.FileInfo f = new System.IO.FileInfo(LOG_FILENAME);
-                long lLength = f.Length;
-
-                if (lLength > 100 * 1024 * 1024)
-                    f.Delete();
-            }
-            catch { }
-
-            msg = string.Format("{0:G}: {1}\r\n", DateTime.Now, msg);
-            System.IO.File.AppendAllText(LOG_FILENAME, msg);
+            table_filter.Columns.Add("Pages", typeof(int));
+            table_filter.Columns.Add("Year", typeof(int));
         }
         public void LoadData(String lsFileName)
         {
@@ -126,6 +78,11 @@ namespace LibraryInformation
             dgrTable.DataSource = table;
             File.Delete(lsFileNameTXT);
             FillTypeBox();
+
+            dgrTable.Columns[0].Width = (int)(dgrTable.Width * 0.23);
+            dgrTable.Columns[1].Width = (int)(dgrTable.Width * 0.23);
+            dgrTable.Columns[2].Width = (int)(dgrTable.Width * 0.23);
+            dgrTable.Columns[3].Width = (int)(dgrTable.Width * 0.23);
         }
 
         private void btnFilter_Click(object sender, EventArgs e)
@@ -134,92 +91,45 @@ namespace LibraryInformation
             newForm.ShowDialog();
             LogMessageToFile("Filter has been opened");
             filter();
+            FillTypeBox();
         }
         public void filter()
         {
-            /*
-            dgrTable.CurrentCell = null;
-            //Name
-            if (frmFilter.check.Contains("Name"))
-            {
-                for (int i = 0; i < dgrTable.Rows.Count - 1; i++)
-                {
-                    dgrTable.Rows[i].Visible = dgrTable[0, i].Value.ToString().Contains(frmFilter.search);
-                }
-            }
-            //Type
-            if (frmFilter.check.Contains("Type"))
-            {
-                for (int i = 0; i < dgrTable.Rows.Count - 1; i++)
-                {
-                    dgrTable.Rows[i].Visible = dgrTable[1, i].Value.ToString().Contains(frmFilter.search);
-                }
-            }
-            //Pages
-            if (frmFilter.check.Contains("Pages"))
-            {
-                for (int i = 0; i < dgrTable.Rows.Count - 1; i++)
-                {
-                    dgrTable.Rows[i].Visible = dgrTable[1, i].Value.ToString().Contains(frmFilter.search);
-                }
-            }
-            //Year
-            if (frmFilter.check.Contains("Year"))
-            {
-                for (int i = 0; i < dgrTable.Rows.Count - 1; i++)
-                {
-                    dgrTable.Rows[i].Visible = dgrTable[1, i].Value.ToString().Contains(frmFilter.search);
-                }
-            }
-            //None
-            if (frmFilter.check == "")
-            {
-                for (int i = 0; i < dgrTable.Rows.Count - 1; i++)
-                    dgrTable.Rows[i].Visible = true;
-            }
-            else if (frmFilter.search == "")
-            {
-                for (int i = 0; i < dgrTable.Rows.Count - 1; i++)
-                    dgrTable.Rows[i].Visible = true;
-            }
-            */
-
-            /* List<DataGridViewRow> flt = new List<DataGridViewRow>();
-             flt = dgrTable.Rows.Cast<DataGridViewRow>().Where(x => ((string)x.Cells[0].Value).Contains(frmFilter.search));
-
-             foreach (DataGridViewRow row in dgrTable.Rows.Cast<DataGridViewRow>().Where(x => ((string)x.Cells[0].Value).Contains(frmFilter.search)))
-             {
-                 row.Visible = false;
-             }*/
-
             EnumerableRowCollection<DataRow> results = null;
 
-            if (frmFilter.check.Contains("Name"))
+            results = from myRow in table.AsEnumerable()
+                      select myRow;
+            try
             {
-                results = from myRow in table.AsEnumerable()
+                if (frmFilter.check.Contains("Name"))
+                {
+                    results = from myRow in table.AsEnumerable()
                               where myRow.Field<String>("Name").Contains(frmFilter.search)
                               select myRow;
-            }
-            if (frmFilter.check.Contains("Type"))
-            {
-                results = from myRow in table.AsEnumerable()
+                }
+                if (frmFilter.check.Contains("Type"))
+                {
+                    results = from myRow in table.AsEnumerable()
                               where myRow.Field<String>("Type").Contains(frmFilter.search)
                               select myRow;
-            }
-            if (frmFilter.check.Contains("Pages"))
-            {
-                results = from myRow in table.AsEnumerable()
-                              where myRow.Field<String>("Count").Contains(frmFilter.search)
+                }
+                if (frmFilter.check.Contains("Pages"))
+                {
+                    results = from myRow in table.AsEnumerable()
+                              where myRow.Field<int>("Pages") == Convert.ToInt32(frmFilter.search)
                               select myRow;
+                }
+                if (frmFilter.check.Contains("Year"))
+                {
+                    results = from myRow in table.AsEnumerable()
+                                where myRow.Field<int>("Year") == Convert.ToInt32(frmFilter.search)
+                                select myRow;
+                }
             }
-            if (frmFilter.check.Contains("Year"))
-            {
-                results = from myRow in table.AsEnumerable()
-                              where myRow.Field<String>("Year").Contains(frmFilter.search)
-                              select myRow;
-            }
+            catch { }
 
             table_filter.Clear();
+
 
             foreach (DataRow row in results)
             {
@@ -227,42 +137,12 @@ namespace LibraryInformation
             }
 
             dgrTable.DataSource = table_filter;
-
-
-            /*table_filter.Clear();
-            foreach (DataRow row in table.Rows.Cast<DataRow>().Where(x => (string)x.ItemArray[0] == "BBC"))
-            {
-                table_filter.Rows.Add(row);
-            }
-
-            dgrTable.DataSource = table_filter;*/
-
-            //table.Rows.Cast<DataRow>().Where(x => (string)x.ItemArray[0] == "BBC");
-
-            //dgrTable.DataSource = table.Rows.Cast<DataRow>().Where(x => (string)x.ItemArray[0] == "BBC");
-            //dgrTable.Refresh();
-
-            //.FirstOrDefault(r => r.DataBoundItem == myItem).Selected = true;
-
-            //for (int j = 0; j < dgrTable.Rows.Count - 1; j++)
-            //{
-            //    List<String> lines = new List<string>();
-            //    for (int i = 0; i < dgrTable.Rows[j].Cells.Count; i++)
-            //    {
-            //        lines.Add();
-            //        if (i != dgrTable.Rows[j].Cells.Count - 1)
-            //            lines.Add(dgrTable.Rows[j].Cells[i].Value + ", ");
-            //        else
-            //            lines.Add((String)dgrTable.Rows[j].Cells[i].Value);
-            //    }
-            //    var selected = lines.Where(l => lines.Contains(frmFilter.search));
-            //    dgrTable.DataSource = selected.ToArray();
-            //}
         }
+
         private void cmbBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             dgrTable.CurrentCell = null;
-            if (cmbBox.SelectedItem != "All types")
+            if (cmbBox.SelectedItem.ToString() != "All types")
             {
                 for (int i = 0; i < dgrTable.Rows.Count - 1; i++)
                     dgrTable.Rows[i].Visible = dgrTable[1, i].Value.ToString() == cmbBox.SelectedItem.ToString();
@@ -274,7 +154,7 @@ namespace LibraryInformation
             }
         }
 
-            public String convertToTXT(String FilePath)
+        public String convertToTXT(String FilePath)
         {
             List<Library> libraries = new List<Library>();
             String LastPath1 = FilePath;
@@ -366,6 +246,7 @@ namespace LibraryInformation
                 LastPath = SFD.FileName;
                 int convert = SFD.FilterIndex;
                 SaveFile(LastPath, convert);
+                lblFile.Text = String.Format("Data:   {0}", SFD.FileName);
             }
             //MessageBox.Show("Ваш файл находится в " + LastPath);
             LogMessageToFile("File has been saved");
@@ -381,8 +262,6 @@ namespace LibraryInformation
                 if ((row.Cells[1].Value != null) && (!cmbBox.Items.Contains(row.Cells[1].Value)))
                     cmbBox.Items.Add(row.Cells[1].Value);
             }
-
-            //cmbBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
         }
 
         private void btnOpen_Click(object sender, EventArgs e)
@@ -450,6 +329,7 @@ namespace LibraryInformation
             }
             File.Delete(@"1.txt");
         }
+
         public static void convertToJSON(String LastPath, List<String> lines)
         {
             var model = lines.Select(p => new
@@ -466,6 +346,7 @@ namespace LibraryInformation
                 sw.WriteLine(json);
             }
         }
+
         public static void convertToCSV(String LastPath, List<String> lines)
         {
             LastPath = LastPath.Replace(".txt", ".csv");
@@ -512,6 +393,29 @@ namespace LibraryInformation
         private void dgrTable_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
             LogMessageToFile("Row has been added");
+        }
+
+        private void btnResetFilter_Click(object sender, EventArgs e)
+        {
+            dgrTable.DataSource = table;
+            LogMessageToFile("Reset filter");
+            FillTypeBox();
+        }
+
+        public static void LogMessageToFile(string msg)
+        {
+            try
+            {
+                System.IO.FileInfo f = new System.IO.FileInfo(LOG_FILENAME);
+                long lLength = f.Length;
+
+                if (lLength > 100 * 1024 * 1024)
+                    f.Delete();
+            }
+            catch { }
+
+            msg = string.Format("{0:G}: {1}\r\n", DateTime.Now, msg);
+            System.IO.File.AppendAllText(LOG_FILENAME, msg);
         }
     }
     public static class StreamReaderSequence
