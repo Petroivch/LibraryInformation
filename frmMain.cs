@@ -122,11 +122,17 @@ namespace LibraryInformation
                 if (frmFilter.check.Contains("Year"))
                 {
                     results = from myRow in table.AsEnumerable()
-                                where myRow.Field<int>("Year") == Convert.ToInt32(frmFilter.search)
-                                select myRow;
+                              where myRow.Field<int>("Year") == Convert.ToInt32(frmFilter.search)
+                              select myRow;
                 }
             }
-            catch { }
+            catch (System.FormatException ex)
+            {
+                                    results = from myRow in table.AsEnumerable()
+                              where myRow.Field<int>("Year") == Convert.ToInt32(1)
+                              select myRow;
+                LogMessageToFile("ERROR, not a needed format");
+            }
 
             table_filter.Clear();
 
@@ -417,6 +423,12 @@ namespace LibraryInformation
             msg = string.Format("{0:G}: {1}\r\n", DateTime.Now, msg);
             System.IO.File.AppendAllText(LOG_FILENAME, msg);
         }
+
+        private void dgrTable_Sorted(object sender, EventArgs e)
+        {
+            FillTypeBox();
+        }
+        //
     }
     public static class StreamReaderSequence
     {

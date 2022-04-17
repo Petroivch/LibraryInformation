@@ -45,32 +45,31 @@ namespace LibraryInformation
             // dgrTable
             // 
             this.dgrTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgrTable.Location = new System.Drawing.Point(10, 50);
-            this.dgrTable.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.dgrTable.Location = new System.Drawing.Point(11, 67);
             this.dgrTable.Name = "dgrTable";
             this.dgrTable.RowHeadersWidth = 51;
             this.dgrTable.RowTemplate.Height = 29;
-            this.dgrTable.Size = new System.Drawing.Size(920, 231);
+            this.dgrTable.Size = new System.Drawing.Size(1051, 308);
             this.dgrTable.TabIndex = 0;
             this.dgrTable.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgrTable_CellValueChanged);
             this.dgrTable.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dgrTable_RowsAdded);
             this.dgrTable.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dgrTable_RowsRemoved);
+            this.dgrTable.Sorted += new System.EventHandler(this.dgrTable_Sorted);
             // 
             // lblType
             // 
             this.lblType.AutoSize = true;
-            this.lblType.Location = new System.Drawing.Point(10, 22);
+            this.lblType.Location = new System.Drawing.Point(11, 29);
             this.lblType.Name = "lblType";
-            this.lblType.Size = new System.Drawing.Size(34, 15);
+            this.lblType.Size = new System.Drawing.Size(43, 20);
             this.lblType.TabIndex = 1;
             this.lblType.Text = "Type:";
             // 
             // btnExit
             // 
-            this.btnExit.Location = new System.Drawing.Point(849, 306);
-            this.btnExit.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnExit.Location = new System.Drawing.Point(970, 408);
             this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(82, 22);
+            this.btnExit.Size = new System.Drawing.Size(94, 29);
             this.btnExit.TabIndex = 2;
             this.btnExit.Text = "Exit";
             this.btnExit.UseVisualStyleBackColor = true;
@@ -78,10 +77,9 @@ namespace LibraryInformation
             // 
             // btnOpen
             // 
-            this.btnOpen.Location = new System.Drawing.Point(29, 306);
-            this.btnOpen.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnOpen.Location = new System.Drawing.Point(33, 408);
             this.btnOpen.Name = "btnOpen";
-            this.btnOpen.Size = new System.Drawing.Size(82, 22);
+            this.btnOpen.Size = new System.Drawing.Size(94, 29);
             this.btnOpen.TabIndex = 3;
             this.btnOpen.Text = "Open";
             this.btnOpen.UseVisualStyleBackColor = true;
@@ -89,10 +87,9 @@ namespace LibraryInformation
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(116, 306);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnSave.Location = new System.Drawing.Point(133, 408);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(82, 22);
+            this.btnSave.Size = new System.Drawing.Size(94, 29);
             this.btnSave.TabIndex = 4;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
@@ -101,19 +98,17 @@ namespace LibraryInformation
             // cmbBox
             // 
             this.cmbBox.FormattingEnabled = true;
-            this.cmbBox.Location = new System.Drawing.Point(67, 20);
-            this.cmbBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.cmbBox.Location = new System.Drawing.Point(77, 27);
             this.cmbBox.Name = "cmbBox";
-            this.cmbBox.Size = new System.Drawing.Size(133, 23);
+            this.cmbBox.Size = new System.Drawing.Size(151, 28);
             this.cmbBox.TabIndex = 5;
             this.cmbBox.SelectedIndexChanged += new System.EventHandler(this.cmbBox_SelectedIndexChanged);
             // 
             // btnFilter
             // 
-            this.btnFilter.Location = new System.Drawing.Point(241, 306);
-            this.btnFilter.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnFilter.Location = new System.Drawing.Point(275, 408);
             this.btnFilter.Name = "btnFilter";
-            this.btnFilter.Size = new System.Drawing.Size(82, 22);
+            this.btnFilter.Size = new System.Drawing.Size(94, 29);
             this.btnFilter.TabIndex = 6;
             this.btnFilter.Text = "Set filter";
             this.btnFilter.UseVisualStyleBackColor = true;
@@ -122,17 +117,16 @@ namespace LibraryInformation
             // lblFile
             // 
             this.lblFile.AutoSize = true;
-            this.lblFile.Location = new System.Drawing.Point(231, 22);
+            this.lblFile.Location = new System.Drawing.Point(264, 29);
             this.lblFile.Name = "lblFile";
-            this.lblFile.Size = new System.Drawing.Size(0, 15);
+            this.lblFile.Size = new System.Drawing.Size(0, 20);
             this.lblFile.TabIndex = 7;
             // 
             // btnOpenLog
             // 
-            this.btnOpenLog.Location = new System.Drawing.Point(761, 306);
-            this.btnOpenLog.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnOpenLog.Location = new System.Drawing.Point(870, 408);
             this.btnOpenLog.Name = "btnOpenLog";
-            this.btnOpenLog.Size = new System.Drawing.Size(82, 22);
+            this.btnOpenLog.Size = new System.Drawing.Size(94, 29);
             this.btnOpenLog.TabIndex = 8;
             this.btnOpenLog.Text = "Open a log";
             this.btnOpenLog.UseVisualStyleBackColor = true;
@@ -140,10 +134,9 @@ namespace LibraryInformation
             // 
             // btnResetFilter
             // 
-            this.btnResetFilter.Location = new System.Drawing.Point(329, 306);
-            this.btnResetFilter.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnResetFilter.Location = new System.Drawing.Point(376, 408);
             this.btnResetFilter.Name = "btnResetFilter";
-            this.btnResetFilter.Size = new System.Drawing.Size(82, 22);
+            this.btnResetFilter.Size = new System.Drawing.Size(94, 29);
             this.btnResetFilter.TabIndex = 9;
             this.btnResetFilter.Text = "Reset filter";
             this.btnResetFilter.UseVisualStyleBackColor = true;
@@ -151,9 +144,9 @@ namespace LibraryInformation
             // 
             // frmMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(942, 338);
+            this.ClientSize = new System.Drawing.Size(1074, 440);
             this.Controls.Add(this.btnResetFilter);
             this.Controls.Add(this.btnOpenLog);
             this.Controls.Add(this.lblFile);
@@ -165,10 +158,9 @@ namespace LibraryInformation
             this.Controls.Add(this.lblType);
             this.Controls.Add(this.dgrTable);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(958, 377);
-            this.MinimumSize = new System.Drawing.Size(958, 377);
+            this.MaximumSize = new System.Drawing.Size(1092, 487);
+            this.MinimumSize = new System.Drawing.Size(1092, 487);
             this.Name = "frmMain";
             this.Text = "Library information";
             this.Load += new System.EventHandler(this.frmMain_Load);
