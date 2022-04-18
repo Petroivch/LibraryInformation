@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using NLog;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,9 +19,11 @@ namespace LibraryInformation
         public DataTable table;
         public DataTable table_filter;
 
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         string[] temp1;
         String LastPath = "";
-        static String LOG_FILENAME = "log.txt";
+        static String LOG_FILENAME = "log_nlog.txt";
         public frmMain()
         {
             InitializeComponent();
@@ -27,12 +31,13 @@ namespace LibraryInformation
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            LogMessageToFile("Program has been closed");
+            Log.Info("Program has been closed");
             Application.Exit();
         }
         private void frmMain_Load(object sender, EventArgs e)
         {
-            LogMessageToFile("Program has been started");
+            Log.Info("Program has been started");
+
             cmbBox.Items.Add("All types");
             cmbBox.SelectedItem = "All types";
             cmbBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -51,7 +56,7 @@ namespace LibraryInformation
         }
         public void LoadData(String lsFileName)
         {
-            LogMessageToFile("File has been loaded");
+            Log.Info("File has been loaded");
             table.Clear();
 
             String lsFileNameTXT = convertToTXT(lsFileName);
@@ -89,7 +94,7 @@ namespace LibraryInformation
         {
             frmFilter newForm = new frmFilter();
             newForm.ShowDialog();
-            LogMessageToFile("Filter has been opened");
+            Log.Info("Filter has been opened");
             filter();
             FillTypeBox();
         }
@@ -131,7 +136,7 @@ namespace LibraryInformation
                                     results = from myRow in table.AsEnumerable()
                               where myRow.Field<int>("Year") == Convert.ToInt32(1)
                               select myRow;
-                LogMessageToFile("ERROR, not a needed format");
+                Log.Info("ERROR, not a needed format");
             }
 
             table_filter.Clear();
@@ -255,7 +260,7 @@ namespace LibraryInformation
                 lblFile.Text = String.Format("Data:   {0}", SFD.FileName);
             }
             //MessageBox.Show("Ваш файл находится в " + LastPath);
-            LogMessageToFile("File has been saved");
+            Log.Info("File has been saved");
         }
 
         public void FillTypeBox()
@@ -280,7 +285,7 @@ namespace LibraryInformation
                 LoadData(OPF.FileName);
             }
             lblFile.Text = String.Format("Data:   {0}", OPF.FileName);
-            LogMessageToFile("User opened OpenFileDialog");
+            Log.Info("User opened OpenFileDialog");
         }
         private void btnOpenLog_Click(object sender, EventArgs e)
         {
@@ -387,48 +392,48 @@ namespace LibraryInformation
         private void dgrTable_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
         {
             FillTypeBox();
-            LogMessageToFile("Row has been removed");
+            Log.Info("Row has been removed");
         }
 
         private void dgrTable_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             FillTypeBox();
-            LogMessageToFile("Cell Value has been changed");
+            Log.Info("Cell Value has been changed");
         }
 
         private void dgrTable_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
-            LogMessageToFile("Row has been added");
+            Log.Info("Row has been added");
         }
 
         private void btnResetFilter_Click(object sender, EventArgs e)
         {
             dgrTable.DataSource = table;
-            LogMessageToFile("Reset filter");
+            Log.Info("Reset filter");
             FillTypeBox();
         }
 
-        public static void LogMessageToFile(string msg)
-        {
-            try
-            {
-                System.IO.FileInfo f = new System.IO.FileInfo(LOG_FILENAME);
-                long lLength = f.Length;
+        //public static void LogMessageToFile(string msg)
+        //{
+        //    try
+        //    {
+        //        System.IO.FileInfo f = new System.IO.FileInfo(LOG_FILENAME);
+        //        long lLength = f.Length;
 
-                if (lLength > 100 * 1024 * 1024)
-                    f.Delete();
-            }
-            catch { }
+        //        if (lLength > 100 * 1024 * 1024)
+        //            f.Delete();
+        //    }
+        //    catch { }
 
-            msg = string.Format("{0:G}: {1}\r\n", DateTime.Now, msg);
-            System.IO.File.AppendAllText(LOG_FILENAME, msg);
-        }
+        //    msg = string.Format("{0:G}: {1}\r\n", DateTime.Now, msg);
+        //    System.IO.File.AppendAllText(LOG_FILENAME, msg);
+        //}
 
         private void dgrTable_Sorted(object sender, EventArgs e)
         {
             FillTypeBox();
         }
-        //
+
     }
     public static class StreamReaderSequence
     {
